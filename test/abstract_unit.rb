@@ -1,7 +1,7 @@
 ENV['RAILS_ENV'] = 'test'
 require 'test/unit'
 
-require '/home/jonathan/balrog_all/branches/ext/config/boot'
+require File.dirname(__FILE__) + '/../../../../config/boot'
 Rails::Initializer.run
 
 ActiveRecord::Base.configurations = YAML::load(IO.read(File.dirname(__FILE__) + '/database.yml'))
