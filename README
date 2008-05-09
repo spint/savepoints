@@ -1,0 +1,37 @@
+Savepoints
+==========
+
+This plugin adds support for savepoints to ActiveRecord.
+
+The original behaviour whereby nested calls to ActiveRecord::Base.transaction do not result in the opening of
+new transactions or savepoints has been maintained.To require a savepoint pass :force => true to ActiveRecord::Base.transaction.
+
+  # No savepoints opened, original Rails behaviour
+  Person.transaction do
+    Person.transaction do
+    end
+  end
+  
+  # Savepoint opened by inner transaction
+  Person.transaction do
+    Person.transaction :force => true do
+    end
+  end
+  
+Issues surrounding the use of transactional fixtures in tests have also been addressed by ensuring that the first call to ActiveRecord::Base.transaction
+inside a test case always opens a new savepoint even without passing :force => true.
+
+  class MyTestCase < Test::Unit::TestCase
+    self.use_transactional_fixtures = true
+    
+    def my_test
+      # Savepoint opened for outer call to transaction
+      Person.transaction do
+      end
+    end
+  end
+
+This plugin is based on patches submitted by tarmo at http://dev.rubyonrails.org/ticket/5457
+
+Please report bugs to jonathan.viney@gmail.com.
+
