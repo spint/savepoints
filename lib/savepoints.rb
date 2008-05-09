@@ -55,7 +55,28 @@ module ActiveRecord
       end
     end
     
-    MysqlAdapter.class_eval do
+    class MysqlAdapter < AbstractAdapter
+      def create_savepoint(savepoint_number)
+        execute("SAVEPOINT #{savepoint_name(savepoint_number)}")
+        true
+      rescue Exception
+        # Savepoints are not supported
+      end
+      
+      def rollback_to_savepoint(savepoint_number)
+        execute("ROLLBACK TO SAVEPOINT #{savepoint_name(savepoint_number)}")
+      rescue Exception
+        # Savepoints are not supported
+      end
+      
+      def release_savepoint(savepoint_number)
+        execute("RELEASE SAVEPOINT #{savepoint_name(savepoint_number)}")
+      rescue Exception
+        # Savepoints are not supported
+      end
+    end
+    
+    class PostgreSQLAdapter < AbstractAdapter
       def create_savepoint(savepoint_number)
         execute("SAVEPOINT #{savepoint_name(savepoint_number)}")
         true
