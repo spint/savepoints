@@ -1,8 +1,13 @@
 ENV['RAILS_ENV'] = 'test'
 require 'test/unit'
 
-require File.dirname(__FILE__) + '/../../../../config/boot'
-Rails::Initializer.run
+begin
+  require File.dirname(__FILE__) + '/../../../../config/boot'
+  Rails::Initializer.run
+rescue LoadError
+  require 'rubygems'
+  require 'activerecord'
+end
 
 ActiveRecord::Base.configurations = YAML::load(IO.read(File.dirname(__FILE__) + '/database.yml'))
 ActiveRecord::Base.logger = Logger.new(File.dirname(__FILE__) + '/debug.log')
