@@ -1,6 +1,13 @@
 Savepoints
 ==========
 
+************************
+clone of the SVN repository of Jonathan Viney (http://svn.viney.net.nz/things/rails/plugins/savepoints/)
+Added support for Oracle 
+[spint]
+************************
+
+
 This plugin adds support for savepoints to ActiveRecord.
 
 The original behaviour whereby nested calls to ActiveRecord::Base.transaction do not result in the opening of
